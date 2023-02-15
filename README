@@ -1,0 +1,156 @@
+Initialise the contract:
+
+C:\rust\step_by_step>cargo concordium init
+✔  Which template should be expanded? · default
+ Project Name: nossica_task2_hackathon
+ Renaming project called `nossica_task2_hackathon` to `nossica-task2-hackathon`...
+ Destination: C:\rust\step_by_step\.\nossica-task2-hackathon ...
+ project-name: nossica-task2-hackathon ...
+ Generating template ...
+ Description for the project?: Test2
+[1/3]   Done: Cargo.toml                                                                                                [2/3]   Done: src\lib.rs                                                                                                [3/3]   Done: src                                                                                                        Moving generated files into: `C:\rust\step_by_step\.\nossica-task2-hackathon`...
+ Initializing a fresh Git repository
+ Done! New project created C:\rust\step_by_step\.\nossica-task2-hackathon
+Created the smart contract template.
+
+Built the contract:
+
+C:\rust\step_by_step\nossica-task2-hackathon>cargo concordium build -e --out ./my_concordium_project.wasm.v1
+   Compiling nossica_task2_hackathon v0.1.0 (C:\rust\step_by_step\nossica-task2-hackathon)
+    Finished release [optimized] target(s) in 0.46s
+   Compiling nossica_task2_hackathon v0.1.0 (C:\rust\step_by_step\nossica-task2-hackathon)
+    Finished release [optimized] target(s) in 0.60s
+
+   Module schema includes:
+
+     Contract schema: 'nossica_task2_hackathon' in total 90 B.
+       receive
+        - 'receive' : 42 B
+        - 'view'    : 23 B
+
+   Total size of the module schema is 124 B
+   Embedding schema into module.
+
+    Finished smart contract module 22.362 kB
+
+Ran local tests:
+
+C:\rust\step_by_step\nossica-task2-hackathon>cargo concordium test
+Running cargo build --release --target wasm32-unknown-unknown --features concordium-std/wasm-test --target-dir target/concordium
+   Compiling concordium-std-derive v5.1.0
+   Compiling concordium-std v6.0.0
+   Compiling nossica_task2_hackathon v0.1.0 (C:\rust\step_by_step\nossica-task2-hackathon)
+    Finished release [optimized] target(s) in 5.23s
+
+Running tests ...
+  - test_init ... ok
+  - test_throw_error ... ok
+  - test_throw_no_error ... ok
+Test result: ok
+
+Deploy contract:
+
+C:\rust\step_by_step\nossica-task2-hackathon>concordium-client module deploy my_concordium_project.wasm.v1 --sender Nossica --grpc-port 10000 --grpc-ip node.testnet.concordium.com
+Using default energy amount of 24759 NRG.
+Deploy the module 'my_concordium_project.wasm.v1'.
+Allowing up to 24759 NRG to be spent as transaction fee.
+Confirm [yN]: y
+y
+Deploying module...
+Enter password for credential with index 0 and signing key with index 0:
+Transaction '2a0c0f06024f194c22901dc7c64cfe1e7938a8ae849daf7637d15ca2ccb1fa01' sent to the baker.
+Waiting for the transaction to be committed and finalized.
+You may skip this step by interrupting the command using Ctrl-C (pass flag '--no-wait' to do this by default).
+The transaction will still get processed and may be queried using
+  'concordium-client transaction status 2a0c0f06024f194c22901dc7c64cfe1e7938a8ae849daf7637d15ca2ccb1fa01'.
+[18:39:44] Waiting for the transaction to be committed......
+Transaction is committed into block 1ccaad17522508b11f934f3f4fd57f182a6ca73806ec4cae35a44efb7a995bf5 with status "success" and cost 44.535530 CCD (24758 NRG).
+[18:39:51] Waiting for the transaction to be finalized....
+Transaction is finalized into block 1ccaad17522508b11f934f3f4fd57f182a6ca73806ec4cae35a44efb7a995bf5 with status "success" and cost 44.535530 CCD (24758 NRG).
+[18:39:56] Transaction finalized.
+Module successfully deployed with reference: 'a041c218e6c43f1da9c17e9947d2d992b76428fca4961a2d9dd2bd20d6a191d0'.
+
+Test Init function:
+
+C:\rust\step_by_step\nossica-task2-hackathon>concordium-client --grpc-ip node.testnet.concordium.com contract init a041c218e6c43f1da9c17e9947d2d992b76428fca4961a2d9dd2bd20d6a191d0  --sender Nossica --contract nossica_task2_hackathon --energy 10000
+Initialize contract 'nossica_task2_hackathon' from module 'a041c218e6c43f1da9c17e9947d2d992b76428fca4961a2d9dd2bd20d6a191d0' with no parameters. Sending 0.000000 CCD.
+Allowing up to 10000 NRG to be spent as transaction fee.
+Transaction expires on Wed, 15 Feb 2023 18:53:16 UTC.
+Confirm [yN]: y
+y
+Enter password for credential with index 0 and signing key with index 0:
+Transaction '9b483e57859cf1ba8a823994495eb55d30678efab3fe849149f27aba506deca4' sent to the baker.
+Waiting for the transaction to be committed and finalized.
+You may skip this step by interrupting the command using Ctrl-C (pass flag '--no-wait' to do this by default).
+The transaction will still get processed and may be queried using
+  'concordium-client transaction status 9b483e57859cf1ba8a823994495eb55d30678efab3fe849149f27aba506deca4'.
+[18:43:20] Waiting for the transaction to be committed......
+Transaction is committed into 2 blocks with status "success" and cost 2.194578 CCD (1220 NRG):
+- 0da3a07d9f7c30819d79e1782e70267e7e86f7b6abfab6aab7059fd87dd66137
+- 787a83cfe082b209dd78a1ad23538dc17ff0523fb368e170787217ee35450ade
+[18:43:26] Waiting for the transaction to be finalized....
+Transaction is finalized into block 787a83cfe082b209dd78a1ad23538dc17ff0523fb368e170787217ee35450ade with status "success" and cost 2.194578 CCD (1220 NRG).
+[18:43:31] Transaction finalized.
+Contract successfully initialized with address: {"index":3102,"subindex":0}
+
+Test Update function with false parameter:
+
+C:\rust\step_by_step\nossica-task2-hackathon>concordium-client --grpc-ip node.testnet.concordium.com --grpc-port 10000 contract update 3102 --entrypoint receive --energy 10000 --sender Nossica --parameter-json update_param.json
+Update contract 'nossica_task2_hackathon' using the function 'receive' with JSON parameters from 'update_param.json'. Sending 0.000000 CCD.
+Allowing up to 10000 NRG to be spent as transaction fee.
+Transaction expires on Wed, 15 Feb 2023 18:57:54 UTC.
+Confirm [yN]: y
+y
+Enter password for credential with index 0 and signing key with index 0:
+Transaction 'dff7bf39e471bf7c5ece4df55617f94eae2072e0e88044e8e29ef34ba17ed19e' sent to the baker.
+Waiting for the transaction to be committed and finalized.
+You may skip this step by interrupting the command using Ctrl-C (pass flag '--no-wait' to do this by default).
+The transaction will still get processed and may be queried using
+  'concordium-client transaction status dff7bf39e471bf7c5ece4df55617f94eae2072e0e88044e8e29ef34ba17ed19e'.
+[18:48:00] Waiting for the transaction to be committed........................
+Transaction is finalized into block 74ce98010fe7aa3e7e40a0fdd0c6ed0dd1faddd33899bd5ed854553e87d0f1ff with status "success" and cost 1.816823 CCD (1010 NRG).
+[18:48:43] Transaction finalized.
+Successfully updated contract instance {"index":3102,"subindex":0} using the function 'receive'.
+
+Test Update function with true parameter:
+
+C:\rust\step_by_step\nossica-task2-hackathon>concordium-client --grpc-ip node.testnet.concordium.com --grpc-port 10000 contract update 3102 --entrypoint receive --energy 10000 --sender Nossica --parameter-json update_param.json
+Update contract 'nossica_task2_hackathon' using the function 'receive' with JSON parameters from 'update_param.json'. Sending 0.000000 CCD.
+Allowing up to 10000 NRG to be spent as transaction fee.
+Transaction expires on Wed, 15 Feb 2023 18:59:03 UTC.
+Confirm [yN]: y
+y
+Enter password for credential with index 0 and signing key with index 0:
+Transaction '795b78fd68e6f7e5a5d6267de6770b28e40d72dc546a659a8cd17ee2d59d06ae' sent to the baker.
+Waiting for the transaction to be committed and finalized.
+You may skip this step by interrupting the command using Ctrl-C (pass flag '--no-wait' to do this by default).
+The transaction will still get processed and may be queried using
+  'concordium-client transaction status 795b78fd68e6f7e5a5d6267de6770b28e40d72dc546a659a8cd17ee2d59d06ae'.
+[18:49:10] Waiting for the transaction to be committed.............
+Transaction is finalized into block 6a1928cb5a0737170040703bb229f5165b0305d71803c3e837a1d18e7a6a5043 with status "rejected" and cost 1.757461 CCD (977 NRG).
+Transaction rejected: 'receive' in 'nossica_task2_hackathon' at {"index":3102,"subindex":0} failed with code -2.
+[18:49:30] Transaction finalized.
+Error: Updating contract instance failed:
+       'receive' in 'nossica_task2_hackathon' at {"index":3102,"subindex":0} failed with code -2.
+
+Test view function:
+
+C:\rust\step_by_step\nossica-task2-hackathon>concordium-client --grpc-ip node.testnet.concordium.com --grpc-port 10000 contract update 3102 --entrypoint view --energy 10000 --sender Nossica
+Update contract 'nossica_task2_hackathon' using the function 'view' with no parameters. Sending 0.000000 CCD.
+Allowing up to 10000 NRG to be spent as transaction fee.
+Transaction expires on Wed, 15 Feb 2023 19:01:47 UTC.
+Confirm [yN]: y
+y
+Enter password for credential with index 0 and signing key with index 0:
+Transaction '195099396d3c89d8b3684c40f7ce3c1b545cd8d0ec4e6850712d623111689ce9' sent to the baker.
+Waiting for the transaction to be committed and finalized.
+You may skip this step by interrupting the command using Ctrl-C (pass flag '--no-wait' to do this by default).
+The transaction will still get processed and may be queried using
+  'concordium-client transaction status 195099396d3c89d8b3684c40f7ce3c1b545cd8d0ec4e6850712d623111689ce9'.
+[18:51:50] Waiting for the transaction to be committed...........
+Transaction is committed into block 3127d5f1323b0cbdd81160d993e1026f061aafc7af59a9a9c1e5acf9218b7167 with status "success" and cost 1.739473 CCD (967 NRG).
+[18:52:07] Waiting for the transaction to be finalized...
+Transaction is finalized into block 3127d5f1323b0cbdd81160d993e1026f061aafc7af59a9a9c1e5acf9218b7167 with status "success" and cost 1.739473 CCD (967 NRG).
+[18:52:07] Transaction finalized.
+Successfully updated contract instance {"index":3102,"subindex":0} using the function 'view'.
+
